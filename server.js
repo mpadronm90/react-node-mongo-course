@@ -11,15 +11,24 @@ server.use(sassMidleware({
     dest: join(__dirname, 'public')
 }));
 
+// server.set('views', join(__dirname, 'views'))
 server.set('view engine', 'ejs');
-
-server.get('/', (req, res) => {
-    res.render('index');
-});
-
 server.use('/api', apiRouter);
 server.use(express.static('public'));
 
-server.listen(config.port, () => {
-    console.info('Express listening on port ', config.port);
+import serverRender from './serverRender';
+
+server.get('/', (req, res) => {
+    serverRender()
+        .then(({initialMarkup, initialData}) => {
+            res.render('index', {
+                initialMarkup,
+                initialData
+            });
+        }).
+        catch(console.error);
+});
+
+server.listen(config.port, config.host, () => {
+    console.info('Express listening on port ', `${config.host}:${config.port}`);
 });

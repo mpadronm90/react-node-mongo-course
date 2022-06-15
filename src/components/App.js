@@ -1,15 +1,17 @@
 import React from 'react';
 import Header from './Header';
 import ContestPreview from './ContestPreview';
+import axios from 'axios';
 
 class App extends React.Component {
     
-    constructor(props) {
-        super(props);
-        this.state = { 
-            test: 42,
-            pageHeader: 'Naming Contests'
-        };
+    state = { 
+        test: 42,
+        pageHeader: 'Naming Contests',
+        contests: this.props.initialContests
+    };
+
+    componentDidMount() {
     }
 
     render() {
@@ -17,7 +19,7 @@ class App extends React.Component {
             <div className='App'>
                 <Header message={this.state.pageHeader}/>
                 <div>
-                    {this.props.contests.map(contest => 
+                    {this.state.contests.map(contest => 
                         <ContestPreview key={contest.id} {...contest}/>
                     )}
                 </div>
